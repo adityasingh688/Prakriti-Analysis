@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurvedic Health Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2E7D32;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+            background: linear-gradient(45deg, #1B5E20, #2E7D32);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #FF8F00, #FFB74D);
+            box-shadow: 0 4px 15px rgba(255, 143, 0, 0.3);
+        }
+
+        .content-area {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            min-height: 500px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-color: #2E7D32;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #2E7D32;
+        }
+
+        .feature-card h3 {
+            color: #2E7D32;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2E7D32;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2E7D32;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #2E7D32, #4CAF50);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #2E7D32;
+        }
+
+        .question-options {
+            margin: 20px 0;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            border-color: #2E7D32;
+            background: #f0f8f0;
+        }
+
+        .option-btn.selected {
+            border-color: #2E7D32;
+            background: #e8f5e8;
+            color: #2E7D32;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 Ayurvedic Health Assessment</h1>
+            <p>Discover Your Unique Prakriti Constitution</p>
+        </div>
+
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="showPage('home')">🏠 Home</button>
+            <button class="nav-btn" onclick="showPage('profile')">👤 Profile</button>
+            <button class="nav-btn" onclick="showPage('analysis')">📊 Analysis</button>
+            <button class="nav-btn" onclick="showPage('dashboard')">📈 Dashboard</button>
+        </div>
+
+        <div class="content-area">
+            <!-- Home Page -->
+            <div id="home-page" class="page">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="color: #2E7D32; font-size: 2rem; margin-bottom: 20px;">Welcome to Your Ayurvedic Journey</h2>
+                    <p style="font-size: 1.2rem; color: #666; max-width: 800px; margin: 0 auto; line-height: 1.6;">
+                        Understand your unique Prakriti (Vata, Pitta, Kapha) through our comprehensive assessment 
+                        and receive personalized health recommendations based on ancient Ayurvedic wisdom.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="showPage('profile')">
+                        <div class="feature-icon">👤</div>
+                        <h3>Personal Profile</h3>
+                        <p>Create your detailed health profile with personal information and health history for accurate analysis.</p>
+                    </div>
+                    <div class="feature-card" onclick="showPage('analysis')">
+                        <div class="feature-icon">📊</div>
+                        <h3>Prakriti Analysis</h3>
+                        <p>Take our comprehensive questionnaire to discover your unique Ayurvedic constitution and dosha balance.</p>
+                    </div>
+                    <div class="feature-card" onclick="showPage('dashboard')">
+                        <div class="feature-icon">📈</div>
+                        <h3>Health Dashboard</h3>
+                        <p>View your results, track progress, and get personalized recommendations for optimal health.</p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #2E7D32, #4CAF50); color: white; padding: 40px; border-radius: 15px; text-align: center; margin-top: 40px;">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px;">About Ayurvedic Constitution</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.7; max-width: 800px; margin: 0 auto;">
+                        Ayurveda recognizes three fundamental energies or doshas: <strong>Vata</strong> (air & space), 
+                        <strong>Pitta</strong> (fire & water), and <strong>Kapha</strong> (earth & water). Your unique combination 
+                        of these doshas determines your Prakriti - your natural constitution that influences your 
+                        physical, mental, and emotional characteristics.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile-page" class="page hidden">
+                <h2 style="color: #2E7D32; text-align: center; margin-bottom: 30px;">Personal Health Profile</h2>
+                <div class="form-container">
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age *</label>
+                            <input type="number" id="age" name="age" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Gender *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Height (cm) *</label>
+                            <input type="number" id="height" name="height" min="50" max="300" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Weight (kg) *</label>
+                            <input type="number" id="weight" name="weight" min="20" max="500" required>
+                        </div>
+                        <div style="text-align: center; margin-top: 30px;">
+                            <button type="submit" class="btn-primary">Save Profile & Continue to Analysis</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Analysis Page -->
+            <div id="analysis-page" class="page hidden">
+                <h2 style="color: #2E7D32; text-align: center; margin-bottom: 30px;">Prakriti Analysis Questionnaire</h2>
+                <div id="analysis-content">
+                    <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                        Please complete your profile first to begin the analysis.
+                    </p>
+                    <div style="text-align: center;">
+                        <button class="btn-primary" onclick="showPage('profile')">Complete Profile First</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard-page" class="page hidden">
+                <h2 style="color: #2E7D32; text-align: center; margin-bottom: 30px;">Health Dashboard</h2>
+                <div id="dashboard-content">
+                    <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                        Complete your profile and analysis to view your personalized dashboard.
+                    </p>
+                    <div style="text-align: center;">
+                        <button class="btn-primary" onclick="showPage('profile')">Get Started</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'home';
+        let userProfile = null;
+        let analysisResults = null;
+
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageName + '-page').classList.remove('hidden');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            currentPage = pageName;
+        }
+
+        // Profile form submission
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            userProfile = Object.fromEntries(formData);
+            
+            alert('Profile saved successfully! You can now proceed to the analysis.');
+            
+            // Enable analysis
+            setupAnalysis();
+            showPage('analysis');
+        });
+
+        function setupAnalysis() {
+            const analysisContent = document.getElementById('analysis-content');
+            
+            const questions = [
+                {
+                    question: "What best describes your body frame?",
+                    options: [
+                        { text: "Thin, light, small-boned", dosha: "vata" },
+                        { text: "Medium build, moderate weight", dosha: "pitta" },
+                        { text: "Large frame, heavy, well-built", dosha: "kapha" }
+                    ]
+                },
+                {
+                    question: "How would you describe your skin?",
+                    options: [
+                        { text: "Dry, rough, thin, cool", dosha: "vata" },
+                        { text: "Warm, oily, soft, with freckles/moles", dosha: "pitta" },
+                        { text: "Thick, moist, cool, smooth", dosha: "kapha" }
+                    ]
+                },
+                {
+                    question: "How is your appetite?",
+                    options: [
+                        { text: "Variable, sometimes forget to eat", dosha: "vata" },
+                        { text: "Strong, get irritable when hungry", dosha: "pitta" },
+                        { text: "Steady, can skip meals easily", dosha: "kapha" }
+                    ]
+                },
+                {
+                    question: "How do you handle stress?",
+                    options: [
+                        { text: "Become anxious, worried", dosha: "vata" },
+                        { text: "Become irritable, angry", dosha: "pitta" },
+                        { text: "Remain calm, withdraw", dosha: "kapha" }
+                    ]
+                },
+                {
+                    question: "What describes your personality?",
+                    options: [
+                        { text: "Enthusiastic, creative, changeable", dosha: "vata" },
+                        { text: "Determined, focused, competitive", dosha: "pitta" },
+                        { text: "Calm, steady, loyal", dosha: "kapha" }
+                    ]
+                }
+            ];
+
+            let currentQuestion = 0;
+            let answers = {};
+
+            function renderQuestion() {
+                const q = questions[currentQuestion];
+                const progress = ((currentQuestion + 1) / questions.length) * 100;
+                
+                analysisContent.innerHTML = `
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        Question ${currentQuestion + 1} of ${questions.length}
+                    </p>
+                    <div class="question-card">
+                        <h3 style="color: #2E7D32; margin-bottom: 20px;">${q.question}</h3>
+                        <div class="question-options">
+                            ${q.options.map((option, index) => `
+                                <button class="option-btn" onclick="selectAnswer(${index})">
+                                    ${option.text}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        ${currentQuestion > 0 ? '<button class="nav-btn" onclick="previousQuestion()">← Previous</button>' : ''}
+                        <span style="margin: 0 20px;"></span>
+                        <button class="nav-btn" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+                    </div>
+                `;
+            }
+
+            window.selectAnswer = function(optionIndex) {
+                answers[currentQuestion] = optionIndex;
+                
+                // Update UI
+                document.querySelectorAll('.option-btn').forEach((btn, index) => {
+                    btn.classList.remove('selected');
+                    if (index === optionIndex) {
+                        btn.classList.add('selected');
+                    }
+                });
+                
+                document.getElementById('next-btn').disabled = false;
+            };
+
+            window.nextQuestion = function() {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    renderQuestion();
+                } else {
+                    calculateResults();
+                }
+            };
+
+            window.previousQuestion = function() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    renderQuestion();
+                }
+            };
+
+            function calculateResults() {
+                const scores = { vata: 0, pitta: 0, kapha: 0 };
+                
+                Object.entries(answers).forEach(([questionIndex, optionIndex]) => {
+                    const question = questions[parseInt(questionIndex)];
+                    const selectedOption = question.options[optionIndex];
+                    scores[selectedOption.dosha] += 1;
+                });
+
+                const total = scores.vata + scores.pitta + scores.kapha;
+                const percentages = {
+                    vata: Math.round((scores.vata / total) * 100),
+                    pitta: Math.round((scores.pitta / total) * 100),
+                    kapha: Math.round((scores.kapha / total) * 100)
+                };
+
+                const primaryDosha = Object.keys(scores).reduce((a, b) => 
+                    scores[a] > scores[b] ? a : b
+                );
+
+                analysisResults = {
+                    scores,
+                    percentages,
+                    primaryDosha,
+                    constitution: getConstitutionType(percentages)
+                };
+
+                showResults();
+            }
+
+            function getConstitutionType(percentages) {
+                const sorted = Object.entries(percentages).sort(([,a], [,b]) => b - a);
+                const [first, second] = sorted;
+                
+                if (first[1] - second[1] > 20) {
+                    return `Pure ${first[0].charAt(0).toUpperCase() + first[0].slice(1)}`;
+                } else {
+                    return `${first[0].charAt(0).toUpperCase() + first[0].slice(1)}-${second[0].charAt(0).toUpperCase() + second[0].slice(1)}`;
+                }
+            }
+
+            function showResults() {
+                analysisContent.innerHTML = `
+                    <div style="text-align: center; background: linear-gradient(135deg, #2E7D32, #4CAF50); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+                        <h3 style="font-size: 2rem; margin-bottom: 20px;">🎉 Your Results Are Ready!</h3>
+                        <p style="font-size: 1.2rem;">Constitution: <strong>${analysisResults.constitution}</strong></p>
+                        <p style="font-size: 1.1rem; margin-top: 10px;">Primary Dosha: <strong>${analysisResults.primaryDosha.toUpperCase()}</strong></p>
+                    </div>
+                    
+                    <div class="feature-grid">
+                        <div style="text-align: center; padding: 20px;">
+                            <h4 style="color: #9C27B0; font-size: 1.5rem;">VATA</h4>
+                            <p style="font-size: 2rem; color: #9C27B0; font-weight: bold;">${analysisResults.percentages.vata}%</p>
+                            <p style="color: #666;">Air & Space</p>
+                        </div>
+                        <div style="text-align: center; padding: 20px;">
+                            <h4 style="color: #FF5722; font-size: 1.5rem;">PITTA</h4>
+                            <p style="font-size: 2rem; color: #FF5722; font-weight: bold;">${analysisResults.percentages.pitta}%</p>
+                            <p style="color: #666;">Fire & Water</p>
+                        </div>
+                        <div style="text-align: center; padding: 20px;">
+                            <h4 style="color: #4CAF50; font-size: 1.5rem;">KAPHA</h4>
+                            <p style="font-size: 2rem; color: #4CAF50; font-weight: bold;">${analysisResults.percentages.kapha}%</p>
+                            <p style="color: #666;">Earth & Water</p>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn-primary" onclick="setupDashboard(); showPage('dashboard');">View Detailed Dashboard</button>
+                    </div>
+                `;
+            }
+
+            renderQuestion();
+        }
+
+        function setupDashboard() {
+            if (!userProfile || !analysisResults) return;
+
+            const dashboardContent = document.getElementById('dashboard-content');
+            
+            const bmi = userProfile.weight && userProfile.height ? 
+                (userProfile.weight / Math.pow(userProfile.height / 100, 2)).toFixed(1) : null;
+
+            const recommendations = {
+                vata: {
+                    diet: "Warm, cooked foods; sweet, sour, salty tastes; regular meal times",
+                    lifestyle: "Regular routine, adequate rest, gentle exercise like yoga",
+                    herbs: "Ashwagandha, Brahmi, Jatamansi for calming and grounding"
+                },
+                pitta: {
+                    diet: "Cool, fresh foods; sweet, bitter, astringent tastes; avoid spicy foods",
+                    lifestyle: "Moderate exercise, avoid overheating, practice meditation",
+                    herbs: "Amalaki, Neem, Shatavari for cooling and balancing"
+                },
+                kapha: {
+                    diet: "Light, warm foods; pungent, bitter, astringent tastes; avoid heavy foods",
+                    lifestyle: "Regular vigorous exercise, stay active, avoid oversleeping",
+                    herbs: "Trikatu, Guggulu, Punarnava for stimulation and detox"
+                }
+            };
+
+            const rec = recommendations[analysisResults.primaryDosha];
+
+            dashboardContent.innerHTML = `
+                <div style="background: linear-gradient(135deg, #2E7D32, #4CAF50); color: white; padding: 30px; border-radius: 15px; text-align: center; margin-bottom: 30px;">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Welcome back, ${userProfile.firstName}!</h3>
+                    <p>Your Ayurvedic Constitution: <strong>${analysisResults.constitution}</strong></p>
+                </div>
+
+                <div class="feature-grid">
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px;">
+                        <h4 style="color: #2E7D32; margin-bottom: 15px;">👤 Profile Summary</h4>
+                        <p><strong>Name:</strong> ${userProfile.firstName} ${userProfile.lastName}</p>
+                        <p><strong>Age:</strong> ${userProfile.age} years</p>
+                        <p><strong>Height:</strong> ${userProfile.height} cm</p>
+                        <p><strong>Weight:</strong> ${userProfile.weight} kg</p>
+                        ${bmi ? `<p><strong>BMI:</strong> ${bmi}</p>` : ''}
+                    </div>
+
+                    <div style="background: #f8f9fa; padding: 25px; border-radius: 15px;">
+                        <h4 style="color: #2E7D32; margin-bottom: 15px;">📊 Dosha Balance</h4>
+                        <p><strong>Primary:</strong> ${analysisResults.primaryDosha.toUpperCase()}</p>
+                        <p>Vata: ${analysisResults.percentages.vata}%</p>
+                        <p>Pitta: ${analysisResults.percentages.pitta}%</p>
+                        <p>Kapha: ${analysisResults.percentages.kapha}%</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <h3 style="color: #2E7D32; text-align: center; margin-bottom: 25px;">🌿 Personalized Recommendations</h3>
+                    
+                    <div class="feature-grid">
+                        <div style="background: #e8f5e8; padding: 25px; border-radius: 15px;">
+                            <h4 style="color: #2E7D32; margin-bottom: 15px;">🍽️ Diet</h4>
+                            <p style="line-height: 1.6;">${rec.diet}</p>
+                        </div>
+                        
+                        <div style="background: #e8f5e8; padding: 25px; border-radius: 15px;">
+                            <h4 style="color: #2E7D32; margin-bottom: 15px;">🧘 Lifestyle</h4>
+                            <p style="line-height: 1.6;">${rec.lifestyle}</p>
+                        </div>
+                        
+                        <div style="background: #e8f5e8; padding: 25px; border-radius: 15px;">
+                            <h4 style="color: #2E7D32; margin-bottom: 15px;">🌿 Herbs</h4>
+                            <p style="line-height: 1.6;">${rec.herbs}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <button class="nav-btn" onclick="showPage('analysis')">Retake Analysis</button>
+                    <button class="nav-btn" onclick="showPage('profile')" style="margin-left: 20px;">Update Profile</button>
+                </div>
+            `;
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('home');
+        });
+    </script>
+</body>
+</html>
